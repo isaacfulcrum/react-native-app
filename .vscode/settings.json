@@ -1,0 +1,10 @@
+{
+  // Runs Prettier, then ESLint
+  "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"],
+  "javascript.validate.enable": false,
+  "json.schemas": [
+    {
+      "$schema": "https://json.schemastore.org/jsconfig"
+    }
+  ]
+}

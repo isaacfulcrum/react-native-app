@@ -13,16 +13,16 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  image: {
+    alignSelf: 'center',
+    maxHeight: 300,
+    maxWidth: '40%',
+    paddingHorizontal: 20,
+    resizeMode: 'contain',
+  },
   title: {
     fontSize: 30,
     textAlign: 'center',
-  },
-  image: {
-    paddingHorizontal: 20,
-    maxWidth: '40%',
-    maxHeight: 300,
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
 });
 
