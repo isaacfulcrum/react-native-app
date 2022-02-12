@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 // Assets
 import { AHSOKA } from 'app/assets/images';
 
-const Home = () => {
+export const Home = () => {
   return (
     <View>
       <Text style={styles.title}>Ahsoka</Text>
@@ -26,5 +26,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default Home;
