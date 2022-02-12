@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 // Assets
-import { AHSOKA } from '../assets/images';
+import { AHSOKA } from 'app/assets/images';
 
 const Home = () => {
   return (
     <View>
+      <Text style={styles.title}>Ahsoka</Text>
       <Text style={styles.title}>Ahsoka</Text>
       <Image source={AHSOKA} style={styles.image} />
     </View>
