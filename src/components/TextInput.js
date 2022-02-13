@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 export const TextInput = ({
   label,
   value,
-  onChange,
+  onChangeText,
   containerStyle,
   inputStyle,
   iconName,
@@ -40,7 +40,7 @@ export const TextInput = ({
       <Input
         placeholder={label}
         value={value}
-        onChange={onChange}
+        onChangeText={onChangeText}
         style={[styles.textInput, inputStyle]}
         labelStyle={styles.label}
         inputContainerStyle={styles.inputContainer}

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from 'app/screens/Login';
-import { Home } from 'app/screens/Home';
+import { SignUp } from './SignUp';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -15,7 +15,11 @@ export const MainStack = () => {
           name="Login"
           component={Login}
         />
-        <Screen name="Home" component={Home} />
+        <Screen
+          options={{ headerShown: false }}
+          name="SignUp"
+          component={SignUp}
+        />
       </Navigator>
     </NavigationContainer>
   );

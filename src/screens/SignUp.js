@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View, Dimensions } from 'react-native';
-import { BRAND } from 'app/assets/images';
+import { BRAND_HORIZONTAL } from 'app/assets/images';
 import { Divider, makeStyles } from 'react-native-elements';
 import { FormView } from 'app/layouts/FormView';
 import { WavyHeader } from 'app/components/WavyHeader';
@@ -19,10 +19,10 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    height: 400,
+    height: 200,
   },
   logo: {
-    height: 390,
+    height: 300,
     resizeMode: 'contain',
   },
   formContainer: {
@@ -40,9 +40,9 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().required('Se requiere una contraseña'),
 });
 
-export const Login = ({ navigation }) => {
+export const SignUp = ({ navigation }) => {
   const styles = useStyles();
-  const formHeight = Dimensions.get('window').height - 400;
+  const formHeight = Dimensions.get('window').height - 200;
 
   const formik = useFormik({
     initialValues: {
@@ -55,16 +55,16 @@ export const Login = ({ navigation }) => {
     },
   });
 
-  const navigateSignUp = () => {
-    navigation.navigate('SignUp');
+  const navigateLogin = () => {
+    navigation.navigate('Login');
   };
 
   return (
     <FormView>
       <View style={styles.mainContainer}>
-        <WavyHeader height={350} top={270} backgroundColor={'#254559'} />
+        <WavyHeader height={180} top={150} backgroundColor={'#254559'} />
         <View style={styles.headerContainer}>
-          <Image source={BRAND} style={styles.logo} />
+          <Image source={BRAND_HORIZONTAL} style={styles.logo} />
         </View>
         <View style={[styles.formContainer, { height: formHeight }]}>
           <TextInput
@@ -84,15 +84,12 @@ export const Login = ({ navigation }) => {
             onBlur={formik.handleBlur('password')}
             errorMessage={formik.errors.password}
           />
-          <StyledButton
-            title={'INICIAR SESIÓN'}
-            onPress={formik.handleSubmit}
-          />
+          <StyledButton title={'REGÍSTRATE'} onPress={formik.handleSubmit} />
           <Divider orientation="horizontal" subHeader="o" />
           <StyledButton
-            title={'REGÍSTRATE'}
-            onPress={navigateSignUp}
+            title={'INICIAR SESIÓN'}
             type="outline"
+            onPress={navigateLogin}
           />
         </View>
       </View>
