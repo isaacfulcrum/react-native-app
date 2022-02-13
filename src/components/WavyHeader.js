@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Dimensions } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { makeStyles } from 'react-native-elements';
+import { makeStyles, useTheme } from 'react-native-elements';
 
 const useStyles = makeStyles({
   root: {
@@ -19,6 +19,11 @@ const defaultPattern = `M0,96L48,112C96,128,192,160,288,
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
+/**
+ * @see https://amanhimself.dev/blog/create-custom-headers-with-react-native-svg/
+ * @see https://getwaves.io/
+ */
+
 export function WavyHeader({
   style,
   height,
@@ -28,6 +33,7 @@ export function WavyHeader({
 }) {
   const styles = useStyles();
   const [dimensions, setDimensions] = useState({ window, screen });
+  const { theme } = useTheme();
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
@@ -42,7 +48,7 @@ export function WavyHeader({
     <View style={[styles.root, { width: dimensions.window.width }, style]}>
       <View
         style={{
-          backgroundColor: backgroundColor ?? '#5000ca',
+          backgroundColor: backgroundColor ?? theme.colors.primary,
           height: height ?? 160,
         }}>
         <Svg
@@ -51,7 +57,7 @@ export function WavyHeader({
           viewBox="0 0 1440 320"
           style={[styles.root, { top: top ?? 130 }]}>
           <Path
-            fill={backgroundColor ?? '#5000ca'}
+            fill={backgroundColor ?? theme.colors.primary}
             d={wavePattern ?? defaultPattern}
           />
         </Svg>

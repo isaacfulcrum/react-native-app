@@ -1,4 +1,5 @@
 /**
+ * @see https://reactnativeelements.com/docs/3.4.2/customization#theming
  * @see https://color.adobe.com/es/create/image
  */
 

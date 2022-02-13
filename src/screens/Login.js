@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, View, Dimensions } from 'react-native';
 import { BRAND } from 'app/assets/images';
-import { Divider, makeStyles } from 'react-native-elements';
+import { Divider, makeStyles, useTheme } from 'react-native-elements';
 import { FormView } from 'app/layouts/FormView';
 import { WavyHeader } from 'app/components/WavyHeader';
 import { StyledButton } from 'app/components/StyledButton';
@@ -43,6 +43,7 @@ const loginSchema = Yup.object().shape({
 export const Login = ({ navigation }) => {
   const styles = useStyles();
   const formHeight = Dimensions.get('window').height - 400;
+  const { theme } = useTheme();
 
   const formik = useFormik({
     initialValues: {
@@ -62,7 +63,11 @@ export const Login = ({ navigation }) => {
   return (
     <FormView>
       <View style={styles.mainContainer}>
-        <WavyHeader height={350} top={270} backgroundColor={'#254559'} />
+        <WavyHeader
+          height={350}
+          top={270}
+          backgroundColor={theme.colors.secondary}
+        />
         <View style={styles.headerContainer}>
           <Image source={BRAND} style={styles.logo} />
         </View>

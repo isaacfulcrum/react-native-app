@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native-animatable';
-import { Input, Icon, makeStyles } from 'react-native-elements';
+import { Input, Icon, makeStyles, useTheme } from 'react-native-elements';
 
 const useStyles = makeStyles({
   fieldContainer: {
@@ -14,8 +14,6 @@ const useStyles = makeStyles({
     borderRadius: 16,
     fontSize: 16,
   },
-  label: {},
-  inputContainer: {},
 });
 
 export const TextInput = ({
@@ -26,7 +24,6 @@ export const TextInput = ({
   inputStyle,
   iconName,
   password,
-  keyboardType,
   ...props
 }) => {
   const styles = useStyles();
@@ -34,6 +31,7 @@ export const TextInput = ({
   const toggleVisible = () => {
     setVisible(!visible);
   };
+  const { theme } = useTheme();
 
   return (
     <View style={[styles.fieldContainer, containerStyle]}>
@@ -43,11 +41,13 @@ export const TextInput = ({
         onChangeText={onChangeText}
         style={[styles.textInput, inputStyle]}
         labelStyle={styles.label}
-        inputContainerStyle={styles.inputContainer}
-        keyboardType={keyboardType ?? 'default'}
         leftIcon={
           iconName ? (
-            <Icon name={iconName} type="material" color="#517fa4" />
+            <Icon
+              name={iconName}
+              type="material"
+              color={theme.colors.secondary}
+            />
           ) : undefined
         }
         rightIcon={
@@ -56,7 +56,7 @@ export const TextInput = ({
               onPress={toggleVisible}
               name={visible ? 'visibility-off' : 'visibility'}
               type="material"
-              color="#517fa4"
+              color={theme.colors.secondary}
             />
           ) : undefined
         }

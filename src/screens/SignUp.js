@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     height: 200,
   },
   logo: {
-    height: 300,
+    height: 120,
     resizeMode: 'contain',
   },
   formContainer: {
