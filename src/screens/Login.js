@@ -7,6 +7,7 @@ import { WavyHeader } from 'app/components/WavyHeader';
 import { StyledButton } from 'app/components/StyledButton';
 import { TextInput } from 'app/components/TextInput';
 import { useFormik } from 'formik';
+import { login } from 'app/services/Auth';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles({
@@ -51,8 +52,9 @@ export const Login = ({ navigation }) => {
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+      await login(values.username, values.password).then(console.log);
     },
   });
 

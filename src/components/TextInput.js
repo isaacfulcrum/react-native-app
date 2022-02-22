@@ -10,8 +10,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   textInput: {
-    backgroundColor: 'white',
-    borderRadius: 16,
     fontSize: 16,
   },
 });
@@ -24,6 +22,7 @@ export const TextInput = ({
   inputStyle,
   iconName,
   password,
+  containerProps,
   ...props
 }) => {
   const styles = useStyles();
@@ -34,7 +33,7 @@ export const TextInput = ({
   const { theme } = useTheme();
 
   return (
-    <View style={[styles.fieldContainer, containerStyle]}>
+    <View style={[styles.fieldContainer, containerStyle]} {...containerProps}>
       <Input
         placeholder={label}
         value={value}
