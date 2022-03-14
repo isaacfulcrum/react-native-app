@@ -7,7 +7,6 @@ export const Home = () => {
 
   const get = async () => {
     await userCount().then(({ data }) => {
-      console.log(data);
       setCount(data);
     });
   };

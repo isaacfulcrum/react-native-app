@@ -55,13 +55,21 @@ export const Login = ({ navigation }) => {
     onSubmit: async (values) => {
       await login(values.username, values.password)
         .then(({ data }) => {
-          console.log(data);
           if (data === 1) {
             navigateHome();
           } else if (data === 2) {
             Alert.alert('Oops...', 'Credenciales incorrectas');
           } else if (data === 0) {
-            Alert.alert('Oops...', 'El usuario no existe');
+            Alert.alert('Oops...', 'Presiona continuar para registrarte', [
+              {
+                text: 'Cancelar',
+                style: 'cancel',
+              },
+              {
+                text: 'Continuar',
+                onPress: navigateSignUp,
+              },
+            ]);
           }
         })
         .catch(console.error);
@@ -89,21 +97,22 @@ export const Login = ({ navigation }) => {
         </View>
         <View style={[styles.formContainer, { height: formHeight }]}>
           <TextInput
-            label={'Usuario'}
-            iconName="account-circle"
+            label="Código"
+            iconName="badge"
             value={formik.values.username}
             onChangeText={formik.handleChange('username')}
             onBlur={formik.handleBlur('username')}
-            errorMessage={formik.errors.username}
+            errorMessage={formik.touched.username && formik.errors.username}
+            keyboardType="numeric"
           />
           <TextInput
-            label={'Contraseña'}
+            label="Contraseña"
             iconName="lock"
             password
             value={formik.values.password}
             onChangeText={formik.handleChange('password')}
             onBlur={formik.handleBlur('password')}
-            errorMessage={formik.errors.password}
+            errorMessage={formik.touched.password && formik.errors.password}
           />
           <StyledButton
             title={'INICIAR SESIÓN'}

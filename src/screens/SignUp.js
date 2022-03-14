@@ -45,7 +45,7 @@ const signupSchema = Yup.object().shape({
     .required(requiredMessage),
   password: Yup.string().required(requiredMessage),
   campus: Yup.string().required(requiredMessage),
-  grade: Yup.number().required(requiredMessage),
+  grade: Yup.string().required(requiredMessage),
   cellphone: Yup.string()
     .matches(/^\d+$/, 'Este campo debe ser un número válido')
     .required(requiredMessage),
@@ -68,7 +68,6 @@ export const SignUp = ({ navigation }) => {
     onSubmit: async (values) => {
       await signup(values)
         .then(({ data }) => {
-          console.log(data);
           if (data === 1) {
             Alert.alert(
               'Usuario registrado con éxito',
@@ -96,7 +95,7 @@ export const SignUp = ({ navigation }) => {
 
   return (
     <FormView>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.mainContainer}>
           <View style={styles.formContainer}>
             <TextInput
