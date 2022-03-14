@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Dimensions } from 'react-native';
+import { Image, View, Dimensions, Alert } from 'react-native';
 import { BRAND } from 'app/assets/images';
 import { Divider, makeStyles, useTheme } from 'react-native-elements';
 import { FormView } from 'app/layouts/FormView';
@@ -7,7 +7,7 @@ import { WavyHeader } from 'app/components/WavyHeader';
 import { StyledButton } from 'app/components/StyledButton';
 import { TextInput } from 'app/components/TextInput';
 import { useFormik } from 'formik';
-import { login } from 'app/services/Auth';
+import { login } from 'app/services/auth';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles({
@@ -53,13 +53,27 @@ export const Login = ({ navigation }) => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      await login(values.username, values.password).then(console.log);
+      await login(values.username, values.password)
+        .then(({ data }) => {
+          console.log(data);
+          if (data === 1) {
+            navigateHome();
+          } else if (data === 2) {
+            Alert.alert('Oops...', 'Credenciales incorrectas');
+          } else if (data === 0) {
+            Alert.alert('Oops...', 'El usuario no existe');
+          }
+        })
+        .catch(console.error);
     },
   });
 
   const navigateSignUp = () => {
     navigation.navigate('SignUp');
+  };
+
+  const navigateHome = () => {
+    navigation.navigate('Home');
   };
 
   return (

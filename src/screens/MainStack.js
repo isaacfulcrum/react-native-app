@@ -4,7 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from 'app/screens/Login';
 import { SignUp } from './SignUp';
 import { Header } from 'app/components/Header';
-import { makeStyles, useTheme } from 'react-native-elements';
+import { makeStyles } from 'react-native-elements';
+import { Home } from './Home';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -24,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const MainStack = () => {
   const styles = useStyles();
-  const { theme } = useTheme();
   return (
     <NavigationContainer>
       <Navigator
@@ -37,6 +37,13 @@ export const MainStack = () => {
           options={{ headerShown: false }}
           name="Login"
           component={Login}
+        />
+        <Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerTitle: (props) => <Header {...props} />,
+          }}
         />
         <Screen
           name="SignUp"

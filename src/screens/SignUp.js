@@ -1,12 +1,12 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { Divider, makeStyles } from 'react-native-elements';
 import { FormView } from 'app/layouts/FormView';
 import { StyledButton } from 'app/components/StyledButton';
 import { TextInput } from 'app/components/TextInput';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import DateTimePicker from 'app/components/DateTimePicker';
+import { signup } from 'app/services/auth';
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -36,15 +36,19 @@ const useStyles = makeStyles({
 const requiredMessage = 'Este campo es requerido';
 
 const signupSchema = Yup.object().shape({
-  code: Yup.number('Este campo debe ser código válido').required(
-    requiredMessage,
-  ),
   name: Yup.string().required(requiredMessage),
+  code: Yup.string()
+    .matches(/^\d+$/, 'Este campo debe ser código válido')
+    .required(requiredMessage),
+  email: Yup.string()
+    .email('Ingresa un correo válido')
+    .required(requiredMessage),
   password: Yup.string().required(requiredMessage),
-  birthdate: Yup.string().required(requiredMessage),
   campus: Yup.string().required(requiredMessage),
   grade: Yup.number().required(requiredMessage),
-  cellphone: Yup.string().required(requiredMessage),
+  cellphone: Yup.string()
+    .matches(/^\d+$/, 'Este campo debe ser un número válido')
+    .required(requiredMessage),
 });
 
 export const SignUp = ({ navigation }) => {
@@ -54,15 +58,35 @@ export const SignUp = ({ navigation }) => {
     initialValues: {
       name: '',
       code: '',
+      email: '',
       password: '',
-      birthdate: '',
       campus: '',
       grade: '',
       cellphone: '',
     },
     validationSchema: signupSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      await signup(values)
+        .then(({ data }) => {
+          console.log(data);
+          if (data === 1) {
+            Alert.alert(
+              'Usuario registrado con éxito',
+              'Ingresa tus credenciales para iniciar sesión',
+              [
+                {
+                  text: 'Continuar',
+                  onPress: navigateLogin,
+                },
+              ],
+            );
+          } else if (data === 2) {
+            Alert.alert('Oops...', 'Este usuario ya existe');
+          } else if (data === 0) {
+            Alert.alert('Oops...', 'Los datos ingresados son inválidos');
+          }
+        })
+        .catch(console.error);
     },
   });
 
@@ -93,6 +117,14 @@ export const SignUp = ({ navigation }) => {
               keyboardType="numeric"
             />
             <TextInput
+              label={'Correo'}
+              iconName="email"
+              value={formik.values.email}
+              onChangeText={formik.handleChange('email')}
+              onBlur={formik.handleBlur('email')}
+              errorMessage={formik.touched.email && formik.errors.email}
+            />
+            <TextInput
               label={'Contraseña'}
               iconName="lock"
               value={formik.values.password}
@@ -100,13 +132,6 @@ export const SignUp = ({ navigation }) => {
               onBlur={formik.handleBlur('password')}
               errorMessage={formik.touched.password && formik.errors.password}
               password
-            />
-            <DateTimePicker
-              label={'Fecha de nacimiento'}
-              value={formik.values.birthdate}
-              onChangeText={formik.handleChange('birthdate')}
-              onBlur={formik.handleBlur('birthdate')}
-              errorMessage={formik.touched.birthdate && formik.errors.birthdate}
             />
             <TextInput
               label={'Escuela'}
