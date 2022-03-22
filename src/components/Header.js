@@ -9,11 +9,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 10,
-    maxHeight: 70,
+    maxHeight: 60,
+    overflow: 'hidden',
+    width: '100%',
   },
   logo: {
     resizeMode: 'contain',
-    width: 200,
+    width: 100,
     alignSelf: 'center',
   },
 }));

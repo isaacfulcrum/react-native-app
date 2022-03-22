@@ -1,9 +1,18 @@
+import { SidebarView } from 'app/components/SidebarView';
 import { userCount } from 'app/services/home';
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
+import { makeStyles } from 'react-native-elements';
+
+const useStyles = makeStyles({
+  userCount: {
+    fontSize: 20,
+  },
+});
 
 export const Home = () => {
   const [count, setCount] = useState(0);
+  const styles = useStyles();
 
   const get = async () => {
     await userCount().then(({ data }) => {
@@ -16,8 +25,8 @@ export const Home = () => {
   }, []);
 
   return (
-    <View>
-      <Text>{count}</Text>
-    </View>
+    <SidebarView>
+      <Text style={styles.userCount}>Usuarios registrados: {`${count}`}</Text>
+    </SidebarView>
   );
 };
