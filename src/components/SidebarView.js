@@ -8,6 +8,7 @@ import {
   Icon,
 } from 'react-native-elements';
 import MenuDrawer from 'react-native-side-drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
   imenu: {
-    marginVertical: 15,
+    marginVertical: 10,
     alignSelf: 'center',
   },
   collapse: {
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export const SidebarView = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [dimensions, setDimensions] = useState({ window, screen });
+  const [user, setUser] = useState({});
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -60,19 +62,21 @@ export const SidebarView = ({ children }) => {
     return () => subscription?.remove();
   });
 
-  const user = {
-    name: 'Jorge Isaac Castro Arredondo',
-    code: '218744635',
-    campus: 'CUCEI',
-  };
   const styles = useStyles();
 
   const toggleOpen = () => {
     setOpen(!open);
   };
 
+  const get = async () => {
+    const value = await AsyncStorage.getItem('user');
+    if (value !== null) {
+      setUser(JSON.parse(value));
+    }
+  };
+
   useEffect(() => {
-    // Get user service
+    get();
   }, []);
 
   const DrawerContent = () => {
@@ -80,16 +84,18 @@ export const SidebarView = ({ children }) => {
       <View style={styles.drawer}>
         <View style={styles.imenu}>
           <Avatar
-            size={100}
+            size={180}
             rounded
-            source={{ uri: 'https://randomuser.me/api/portraits/women/57.jpg' }}
+            source={{
+              uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg',
+            }}
             title="Picture">
             <Avatar.Accessory size={23} />
           </Avatar>
         </View>
-        <Text style={styles.tmenu}>{user.name}</Text>
-        <Text style={styles.tmenu}>{user.code}</Text>
-        <Text style={styles.tmenu}>{user.campus}</Text>
+        <Text style={styles.tmenu}>{user.nombre}</Text>
+        <Text style={styles.tmenu}>{user.codigo}</Text>
+        <Text style={styles.tmenu}>{user.centro}</Text>
         <Button title="Cerrar" onPress={toggleOpen} />
       </View>
     );

@@ -9,6 +9,7 @@ import { TextInput } from 'app/components/TextInput';
 import { useFormik } from 'formik';
 import { login } from 'app/services/auth';
 import * as Yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -54,8 +55,10 @@ export const Login = ({ navigation }) => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       await login(values.username, values.password)
-        .then(({ data }) => {
-          if (data === 1) {
+        .then(async ({ data }) => {
+          if (data?.codigo) {
+            const jsonValues = JSON.stringify(data);
+            await AsyncStorage.setItem('user', jsonValues);
             navigateHome();
           } else if (data === 2) {
             Alert.alert('Oops...', 'Credenciales incorrectas');

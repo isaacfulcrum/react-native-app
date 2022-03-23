@@ -21,10 +21,6 @@ const useStyles = makeStyles((theme) => ({
     shadowRadius: 2.62,
     elevation: 6,
   },
-  menuIcon: {
-    width: 60,
-    backgroundColor: 'red',
-  },
 }));
 
 export const MainStack = () => {
@@ -39,16 +35,16 @@ export const MainStack = () => {
           headerTitleAlign: 'center',
         }}>
         <Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={Login}
+        />
+        <Screen
           name="Home"
           component={Home}
           options={{
             headerTitle: (props) => <Header {...props} />,
           }}
-        />
-        <Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={Login}
         />
         <Screen
           name="SignUp"
