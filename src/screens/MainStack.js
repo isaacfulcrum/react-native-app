@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from 'app/screens/Login';
@@ -6,6 +7,8 @@ import { SignUp } from './SignUp';
 import { Header } from 'app/components/Header';
 import { makeStyles } from 'react-native-elements';
 import { Home } from './Home';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -25,6 +28,23 @@ const useStyles = makeStyles((theme) => ({
 
 export const MainStack = () => {
   const styles = useStyles();
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const get = async () => {
+    await AsyncStorage.getItem('user').then((value) => {
+      if (value !== null) {
+        setIsSignedIn(true);
+      }
+    });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  if (loading) return <ActivityIndicator size="large" color="blue" />;
 
   return (
     <NavigationContainer>
@@ -34,25 +54,30 @@ export const MainStack = () => {
           headerStyle: styles.headerStyle,
           headerTitleAlign: 'center',
         }}>
-        <Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={Login}
-        />
-        <Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerTitle: (props) => <Header {...props} />,
-          }}
-        />
-        <Screen
-          name="SignUp"
-          component={SignUp}
-          options={{
-            headerTitle: (props) => <Header {...props} />,
-          }}
-        />
+        {isSignedIn ? (
+          <>
+            <Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+          </>
+        ) : (
+          <>
+            <Screen
+              options={{ headerShown: false }}
+              name="Login"
+              component={Login}
+            />
+            <Screen
+              name="SignUp"
+              component={SignUp}
+              options={{
+                headerTitle: (props) => <Header {...props} />,
+              }}
+            />
+          </>
+        )}
       </Navigator>
     </NavigationContainer>
   );

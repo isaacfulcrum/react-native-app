@@ -41,9 +41,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     zIndex: 10,
   },
-  content: {
-    padding: 10,
-  },
 }));
 
 export const SidebarView = ({ children }) => {
