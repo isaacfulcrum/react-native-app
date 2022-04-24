@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,8 +7,11 @@ import { SignUp } from './SignUp';
 import { Header } from 'app/components/Header';
 import { makeStyles } from 'react-native-elements';
 import { Home } from './Home';
+import { MarathonContext } from 'app/context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { actionTypes } from 'app/context';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -28,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const MainStack = () => {
   const styles = useStyles();
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const { state, dispatch } = useContext(MarathonContext);
   const [loading, setLoading] = useState(true);
 
   const get = async () => {
     await AsyncStorage.getItem('user').then((value) => {
       if (value !== null) {
-        setIsSignedIn(true);
+        dispatch({ type: actionTypes.login });
       }
     });
     setLoading(false);
@@ -54,7 +57,7 @@ export const MainStack = () => {
           headerStyle: styles.headerStyle,
           headerTitleAlign: 'center',
         }}>
-        {isSignedIn ? (
+        {state.loggedIn ? (
           <>
             <Screen
               name="Home"

@@ -5,23 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import { makeStyles } from 'react-native-elements';
 import { BRAND } from 'app/assets/images';
-import { RunnerCard } from 'app/components/RunnerCard';
-
-const runners = [
-  {
-    name: 'brynn',
-    avatar: 'https://randomuser.me/api/portraits/men/41.jpg',
-  },
-  {
-    name: 'thot leader',
-    avatar: 'https://randomuser.me/api/portraits/women/40.jpg',
-  },
-  {
-    name: 'thot leader',
-    avatar:
-      'https://images.pexels.com/photos/598745/pexels-photo-598745.jpeg?crop=faces&fit=crop&h=200&w=200&auto=compress&cs=tinysrgb',
-  },
-];
+import { BoardCard } from 'app/components/BoardCard';
 
 const useStyles = makeStyles((theme) => ({
   formView: {
@@ -47,11 +31,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const Home = () => {
   const [count, setCount] = useState(0);
+  const [runners, setRunners] = useState([]);
   const styles = useStyles();
 
   const get = async () => {
     await userCount().then(({ data }) => {
-      setCount(data);
+      setCount(data.num_corredores);
+      console.log(JSON.parse(data.marcador)?.length);
+      setRunners(JSON.parse(data.marcador)?.map(JSON.parse));
     });
   };
 
@@ -69,11 +56,13 @@ export const Home = () => {
           <Text style={styles.userCount}>
             Usuarios registrados: {`${count}`}
           </Text>
-          {runners.map((item, index) => (
-            <RunnerCard
+          {runners?.map((item, index) => (
+            <BoardCard
               key={index}
-              avatar={item.avatar}
-              name={item.name}
+              avatar={item?.foto}
+              name={item?.nombre}
+              km={item?.distancia}
+              time={item?.tiempo}
               placement={index + 1}
             />
           ))}

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Dimensions } from 'react-native';
-import {
-  makeStyles,
-  Button,
-  Avatar,
-  useTheme,
-  Icon,
-} from 'react-native-elements';
+import { makeStyles, Button, Avatar, Icon } from 'react-native-elements';
 import MenuDrawer from 'react-native-side-drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logout } from 'app/services/auth';
+import { actionTypes, MarathonContext } from 'app/context';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -21,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     minHeight: '100%',
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: theme.colors.main.blue,
     paddingHorizontal: 15,
   },
   tmenu: {
@@ -39,7 +35,17 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     width: 60,
     marginTop: 10,
-    zIndex: 10,
+    zIndex: 1110,
+    borderRadius: 30,
+  },
+  icon: {
+    justifyContent: 'center',
+    width: 45,
+    height: 45,
+    borderRadius: 100,
+  },
+  buttonIcon: {
+    marginRight: 10,
   },
 }));
 
@@ -47,7 +53,7 @@ export const SidebarView = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [dimensions, setDimensions] = useState({ window, screen });
   const [user, setUser] = useState({});
-  const { theme } = useTheme();
+  const { dispatch } = useContext(MarathonContext);
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
@@ -63,6 +69,12 @@ export const SidebarView = ({ children }) => {
 
   const toggleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleLogout = () => {
+    logout().then(() => {
+      dispatch({ type: actionTypes.logout });
+    });
   };
 
   const get = async () => {
@@ -84,7 +96,9 @@ export const SidebarView = ({ children }) => {
             size={180}
             rounded
             source={{
-              uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg',
+              uri:
+                user.foto ??
+                'https://ablatival-pools.000webhostapp.com/images/default.jpg',
             }}
             title="Picture">
             <Avatar.Accessory size={23} />
@@ -93,7 +107,20 @@ export const SidebarView = ({ children }) => {
         <Text style={styles.tmenu}>{user.nombre}</Text>
         <Text style={styles.tmenu}>{user.codigo}</Text>
         <Text style={styles.tmenu}>{user.centro}</Text>
-        <Button title="Cerrar" onPress={toggleOpen} />
+        <Button
+          title="Cerrar sesión"
+          onPress={handleLogout}
+          raised
+          icon={
+            <Icon
+              containerStyle={styles.buttonIcon}
+              name="logout"
+              type="material"
+              color="white"
+              onPress={handleLogout}
+            />
+          }
+        />
       </View>
     );
   };
@@ -104,7 +131,7 @@ export const SidebarView = ({ children }) => {
         open={open}
         position={'left'}
         drawerContent={DrawerContent()}
-        drawerPercentage={85}
+        drawerPercentage={80}
         animationTime={250}
         overlay={true}
         opacity={1}>
@@ -114,9 +141,10 @@ export const SidebarView = ({ children }) => {
             { marginLeft: dimensions.window.width - 60 },
           ]}>
           <Icon
-            name="menu"
+            containerStyle={styles.icon}
+            name={open ? 'arrow-back-ios' : 'menu'}
             type="material"
-            color={theme.colors.secondary}
+            color="white"
             onPress={toggleOpen}
           />
         </View>

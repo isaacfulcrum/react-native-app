@@ -1,7 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const axios = require('axios');
 
 const login = (username, password) => {
   return axios.get(`login.php?codigo=${username}&password=${password}`);
+};
+
+const logout = async () => {
+  await AsyncStorage.removeItem('user');
 };
 
 const signup = (data) => {
@@ -19,4 +25,4 @@ const signup = (data) => {
   return axios.get(url);
 };
 
-export { login, signup };
+export { login, logout, signup };
