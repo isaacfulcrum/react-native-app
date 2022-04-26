@@ -1,20 +1,22 @@
 import { SidebarView } from 'app/components/SidebarView';
-import { FormView } from 'app/layouts/FormView';
 import { userCount } from 'app/services/home';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import { makeStyles } from 'react-native-elements';
 import { BRAND } from 'app/assets/images';
 import { BoardCard } from 'app/components/BoardCard';
+import { FlatList } from 'react-native';
 
 const useStyles = makeStyles((theme) => ({
-  formView: {
-    backgroundColor: theme.colors.secondary,
-  },
   mainContainer: {
+    width: '100%',
     height: '100%',
     maxHeight: '100%',
     backgroundColor: theme.colors.secondary,
+    flexDirection: 'column',
+  },
+  headerContainer: {
+    justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -32,14 +34,18 @@ const useStyles = makeStyles((theme) => ({
 export const Home = () => {
   const [count, setCount] = useState(0);
   const [runners, setRunners] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const styles = useStyles();
 
   const get = async () => {
-    await userCount().then(({ data }) => {
-      setCount(data.num_corredores);
-      console.log(JSON.parse(data.marcador)?.length);
-      setRunners(JSON.parse(data.marcador)?.map(JSON.parse));
-    });
+    setRefreshing(true);
+    await userCount()
+      .then(({ data }) => {
+        setCount(data.total);
+        setRunners(data.corredores);
+      })
+      .catch(console.error);
+    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -48,26 +54,30 @@ export const Home = () => {
 
   return (
     <SidebarView>
-      <FormView style={styles.formView}>
-        <View style={styles.mainContainer}>
-          <View style={styles.headerContainer}>
-            <Image source={BRAND} style={styles.logo} />
-          </View>
-          <Text style={styles.userCount}>
-            Usuarios registrados: {`${count}`}
-          </Text>
-          {runners?.map((item, index) => (
+      <View style={styles.mainContainer}>
+        <FlatList
+          onRefresh={get}
+          refreshing={refreshing}
+          ListHeaderComponent={
+            <View style={styles.headerContainer}>
+              <Image source={BRAND} style={styles.logo} />
+              <Text style={styles.userCount}>
+                Usuarios registrados: {`${count}`}
+              </Text>
+            </View>
+          }
+          data={runners}
+          renderItem={({ item, index }) => (
             <BoardCard
               key={index}
               avatar={item?.foto}
               name={item?.nombre}
-              km={item?.distancia}
-              time={item?.tiempo}
+              vel={parseInt(item?.velocidad, 10)}
               placement={index + 1}
             />
-          ))}
-        </View>
-      </FormView>
+          )}
+        />
+      </View>
     </SidebarView>
   );
 };

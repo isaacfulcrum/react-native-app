@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     width: '90%',
     borderRadius: 12,
     marginBottom: 12,
+    alignSelf: 'center',
   },
   badge: {
     backgroundColor: theme.colors.grey3,
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const BoardCard = ({ avatar, name, placement, km, time }) => {
+export const BoardCard = ({ avatar, name, placement, vel }) => {
   const styles = useStyles();
   const color = useMemo(() => {
     switch (placement) {
@@ -64,10 +65,10 @@ export const BoardCard = ({ avatar, name, placement, km, time }) => {
           {placement + '° '}
           {name}
         </ListItem.Title>
-        {time !== '0.00' && (
-          <ListItem.Subtitle style={styles.subtitle}>{`${(km / time).toFixed(
+        {!isNaN(vel) && (
+          <ListItem.Subtitle style={styles.subtitle}>{`${vel.toFixed(
             2,
-          )} km/h`}</ListItem.Subtitle>
+          )}`}</ListItem.Subtitle>
         )}
       </ListItem.Content>
       <ListItem.Chevron color="white" />
