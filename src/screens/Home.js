@@ -6,6 +6,7 @@ import { makeStyles } from 'react-native-elements';
 import { BRAND } from 'app/assets/images';
 import { BoardCard } from 'app/components/BoardCard';
 import { FlatList } from 'react-native';
+import { formatLeaderboard } from 'app/utils/carreraUtils';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -40,9 +41,10 @@ export const Home = () => {
   const get = async () => {
     setRefreshing(true);
     await userCount()
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         setCount(data.total);
-        setRunners(data.corredores);
+        const run = await formatLeaderboard(data.corredores);
+        setRunners(run);
       })
       .catch(console.error);
     setRefreshing(false);
