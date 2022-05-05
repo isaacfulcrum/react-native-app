@@ -7,6 +7,7 @@ import { SignUp } from './SignUp';
 import { Header } from 'app/components/Header';
 import { makeStyles } from 'react-native-elements';
 import { Home } from './Home';
+import MapComponent from 'app/components/Map';
 import { MarathonContext } from 'app/context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -62,6 +63,11 @@ export const MainStack = () => {
             <Screen
               name="Home"
               component={Home}
+              options={{ headerShown: false }}
+            />
+            <Screen
+              name="Map"
+              component={MapComponent}
               options={{ headerShown: false }}
             />
           </>
