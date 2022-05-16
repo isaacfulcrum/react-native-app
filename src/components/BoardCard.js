@@ -71,7 +71,6 @@ export const BoardCard = ({ avatar, name, placement, vel }) => {
           )}`}</ListItem.Subtitle>
         )}
       </ListItem.Content>
-      <ListItem.Chevron color="white" />
     </ListItem>
   );
 };
