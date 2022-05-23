@@ -28,4 +28,9 @@ const formatLeaderboard = async (runners) => {
     );
   });
 };
-export { formatLeaderboard };
+
+const secondsToHours = (number) => (number / 3600).toFixed(2);
+
+const hoursToSeconds = (number) => (number * 3600).toFixed(2);
+
+export { formatLeaderboard, secondsToHours, hoursToSeconds };

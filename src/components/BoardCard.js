@@ -68,7 +68,7 @@ export const BoardCard = ({ avatar, name, placement, vel }) => {
         {!isNaN(vel) && (
           <ListItem.Subtitle style={styles.subtitle}>{`${vel.toFixed(
             2,
-          )}`}</ListItem.Subtitle>
+          )} km/h`}</ListItem.Subtitle>
         )}
       </ListItem.Content>
     </ListItem>
